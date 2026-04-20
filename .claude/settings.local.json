@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.gmlenv/Scripts/pip show *)",
+      "Bash(C:/IaaC/AIA/GraphML/.gmlenv/Scripts/pip show *)",
+      "Bash(C:/IaaC/AIA/GraphML/.gmlenv/Scripts/python.exe -m pip list)"
+    ]
+  }
+}
