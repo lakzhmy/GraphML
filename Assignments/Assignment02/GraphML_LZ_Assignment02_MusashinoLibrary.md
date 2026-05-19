@@ -10,7 +10,7 @@ The Musashino Art University Library was designed by Sou Fujimoto Architects and
 
 The aim of this report is to apply graph-based spatial analysis to the floor plan. I wanted to find out which spaces are most accessible, where movement gets squeezed through narrow passages, and how circulation is shared across the floor. The floor plan was converted into a spatial graph by overlaying a 1×1-unit grid, slicing it into discrete face cells, and deriving an analysis graph where each cell is a node and shared adjacencies are edges.
 
-Three metrics were computed and visualized: the Analysis Graph (spatial network), Closeness Centrality, and Shortest Path.
+Four metrics were computed and visualized: the Analysis Graph (spatial network), Closeness Centrality, Shortest Path, and Community Detection.
 
 ![][image1]![][image2]
 
@@ -79,6 +79,25 @@ Key findings:
 * The 4.4% savings from straightening (5.09 units) is small, indicating the navigation graph already finds a geometrically efficient route — there is little redundancy in the topology of the perimeter edge.  
 * The interior open zone, despite having the highest closeness centrality, does not appear in the long-distance path because it supports local, diffuse browsing movement rather than directional traversal.  
 * This reveals a dual circulation logic: the high-centrality core handles local movement and browsing; the east perimeter handles fast, long-distance crossing. The building has two distinct movement modes operating simultaneously without interference.
+
+**Community Detection**
+
+Each colour marks a distinct cluster of cells that are more densely connected to each other than to the rest of the network. The algorithm groups the floor plan into zones based purely on graph topology, with no knowledge of the building's intended programme.
+
+![Community Detection](Exports/Musashino_Show_Centrality.png)
+
+Community detection groups spaces that share stronger internal connectivity than external links. Each colour is a separate community identified by the algorithm.
+
+Key findings:
+
+* **Yellow (north canopy + entire east perimeter + lower-right service block)** — the most striking result. The algorithm groups the building's full eastern boundary edge, the north canopy overhang, and the service block in the lower-right corner into a single community. These cells share no programme but are all topologically peripheral — they connect primarily inward on one side only, giving them a common boundary character. The perimeter is a community of its own.
+* **Orange (upper-right organic zone)** — the branching shelf-wall bays in the upper-right quadrant form a self-contained cluster. These cells are more connected to each other through the organic branching network than to the open floor below, confirming them as a distinct destination zone — likely the more specialised reading and collection areas.
+* **Pink/salmon (central convergence zone)** — the spatial core of the spiral, where the shelf-walls meet, is identified as its own community. Despite being the highest-closeness zone in the building, it is topologically distinct from the surrounding floor, bounded on all sides by void cells and shelf-wall thresholds that limit its outward links.
+* **Purple (left-centre and lower browsing floor)** — the large open browsing area sweeping across the lower-left of the plan forms the building's most spatially extensive community. This is the primary public floor — open, multi-directional, and well connected throughout.
+* **Blue (parallel stacks zone, west side)** — the rows of parallel stacks on the western portion of the plan cluster together. Their regular grid spacing creates a coherent internal topology distinct from the more organic zones to the east.
+* **Dark navy (western appendage)** — the small protruding cells on the far west edge form an isolated community, consistent with service or access volumes that connect back to the main floor through only a few cells.
+
+The community map broadly defines a **three-ring spatial model**: a peripheral boundary zone (yellow), a ring of distinct programmatic clusters (orange, blue, dark navy), and an interior public core (pink, purple). This is the graph's description of how Fujimoto's shelf-walls partition the building — not into rooms, but into topological neighbourhoods.
 
 **Conclusion**
 
