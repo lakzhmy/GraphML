@@ -10,7 +10,7 @@ The Musashino Art University Library was designed by Sou Fujimoto Architects and
 
 The aim of this report is to apply graph-based spatial analysis to the floor plan. I wanted to find out which spaces are most accessible, where movement gets squeezed through narrow passages, and how circulation is shared across the floor. The floor plan was converted into a spatial graph by overlaying a 1×1-unit grid, slicing it into discrete face cells, and deriving an analysis graph where each cell is a node and shared adjacencies are edges.
 
-Four metrics were computed and visualized: the Analysis Graph (spatial network), Closeness Centrality, Shortest Path, and Community Detection.
+Five metrics were computed and visualized: the Analysis Graph (spatial network), Degree Centrality, Closeness Centrality, Shortest Path, and Community Detection.
 
 ![][image1]![][image2]
 
@@ -50,6 +50,28 @@ Key findings:
 * The upper zone, where the shelf-walls branch into a tree-like arrangement, shows significantly sparser connectivity. Node clusters are separated by voids, and several cells appear as near-terminal — reachable only through one or two adjacent cells. This is consistent with more enclosed, destination-type spaces (quiet reading bays, specialist collections).  
 * The east perimeter maintains a relatively continuous chain of connected cells running the full height of the building, suggesting it functions as a long-distance routing edge even without being a designated corridor.
 
+**Degree Centrality**
+
+Colour shows how many direct neighbours each cell has. Yellow and orange mark cells with the most immediate connections; blue and purple mark cells that touch few others.
+
+![][image12]![][image13]
+![Degree Centrality - Graph](Exports/Musashino_Show_DegreeGraph.png)
+![Degree Centrality](Exports/Musashino_Show_DegreeCentrality.png)
+
+<!-- ![Degree Centrality Graph](Exports/Musashino_Show_DegreeGraph.png)
+
+![Degree Centrality Heatmap](Exports/Musashino_Show_DegreeCentrality.png) -->
+
+Degree centrality measures the number of direct connections a node has. In a grid-based floor plan, interior cells in open areas can reach up to four neighbours (N, S, E, W); cells blocked by walls or voids on one or more sides have fewer. It is the most local of the metrics — it only sees immediate adjacency, not the wider network.
+
+Key findings:
+
+* The **brightest yellow-orange zone** sits in the lower-central open area, where the shelf spirals converge. Cells here have the maximum number of immediate neighbours, confirming this as the most locally open and traversable part of the floor. The warmth of this zone is broad and continuous, not concentrated on a single cell — it is a genuinely open field, not a single hub.
+* The **upper branching zone** shows mostly blue and purple, meaning the shelf-wall bays have very few immediate neighbours. Many of these cells touch a void on two or three sides, leaving them connected only along a narrow corridor or from a single direction. This reflects the nature of the branching bays: you can only approach them from one end.
+* The **east perimeter** is cooler (purple to blue) despite playing an important role in long-distance routing. Perimeter cells only connect inward — they have neighbours on at most two or three sides — so their local degree is inherently lower than interior cells. High routing value does not equal high local connectivity.
+* The **degree heatmap is more granular than the closeness heatmap**: small pockets of lower degree appear within the otherwise warm central zone, corresponding to cells that sit adjacent to a bookshelf wall or narrow threshold. These local drops reveal exactly where the shelf-walls pinch movement even within the open floor area.
+* The **DegreeGraph** confirms that most nodes in the open floor are well-connected to each other in a mesh pattern, while nodes in the upper zone form loose chains — a few connections each, in sequence — which is the graph signature of a dead-end corridor or a branching bay.
+
 **Closeness centrality — heatmap** 
 
 Colour shows how globally accessible each cell is. Yellow and orange mark the most integrated cells; blue and purple mark cells that take the longest to reach from everywhere else. **![][image10]**
@@ -84,7 +106,7 @@ Key findings:
 
 Each colour marks a distinct cluster of cells that are more densely connected to each other than to the rest of the network. The algorithm groups the floor plan into zones based purely on graph topology, with no knowledge of the building's intended programme.
 
-![Community Detection](Exports/Musashino_Show_Centrality.png)
+![Community Detection](Exports/Musashino_Show_CommunityDetection.png)
 
 Community detection groups spaces that share stronger internal connectivity than external links. Each colour is a separate community identified by the algorithm.
 
@@ -99,6 +121,7 @@ Key findings:
 
 The community map broadly defines a **three-ring spatial model**: a peripheral boundary zone (yellow), a ring of distinct programmatic clusters (orange, blue, dark navy), and an interior public core (pink, purple). This is the graph's description of how Fujimoto's shelf-walls partition the building — not into rooms, but into topological neighbourhoods.
 
+
 **Conclusion**
 
 **Circulation Patterns** The building operates with two overlapping circulation systems. Local movement is diffuse and exploratory, absorbed by the open central zone where high connectivity allows free-form browsing. Long-distance movement is channelled to the east perimeter (the building's only uninterrupted edge) since the bookshelf walls prevent efficient diagonal traversal through the interior.
@@ -112,6 +135,7 @@ The community map broadly defines a **three-ring spatial model**: a peripheral b
 **Why graph analysis is useful for architectural datasets** Graph analysis turns qualitative spatial intuition into measurable, comparable values. The closeness heatmap confirmed what the eye suspects- the spiral centre is the core but it also revealed how much deeper the outer bays are, and exposed the perimeter's hidden routing role, which is invisible in a standard floor plan reading. For a building as geometrically complex as Musashino, where the walls are also the shelves and the circulation, graph analysis is the only tool that can separate structure from experience and make the logic of the plan explicit.
 
 
+
 [image1]: Assets/model.jpg
 [image2]: Assets/model2.jpg
 [image3]: Exports/Musashino_Show_Topology.png
@@ -123,3 +147,5 @@ The community map broadly defines a **three-ring spatial model**: a peripheral b
 [image9]: Exports/Musashino_Show_AnalysisGraph.png
 [image10]: Exports/Musashino_Show_Heat1.png
 [image11]: Exports/Musashino_Show_ShortestPath.png
+[image12]: Exports/Musashino_Show_Degree.png
+[image13]: Exports/Musashino_Show_DegreeShell.png
