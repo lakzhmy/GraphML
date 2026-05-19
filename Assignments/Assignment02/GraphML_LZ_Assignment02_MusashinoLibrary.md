@@ -16,7 +16,8 @@ Three metrics were computed and visualized: the Analysis Graph (spatial network)
 
 **Floor plan topology** 
 
-The raw imported floor geometry. The irregular outer edge of the building is clearly visible, along with the internal voids made by the bookshelf walls and structural cores. ![][image3]
+The raw imported floor geometry. The irregular outer edge of the building is clearly visible, along with the internal voids made by the bookshelf walls and structural cores.
+ ![][image3]
 
 **Grid overlay** 
 
