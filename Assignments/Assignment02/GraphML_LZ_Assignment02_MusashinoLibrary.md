@@ -108,6 +108,7 @@ Colour shows how many direct neighbours each cell has. Yellow and orange mark ce
 ![Degree Centrality - Graph](Exports/Musashino_Show_DegreeGraph.png)
 ![Degree Centrality](Exports/Musashino_Show_DegreeCentrality.png)
 
+
 <!-- ![Degree Centrality Graph](Exports/Musashino_Show_DegreeGraph.png)
 
 ![Degree Centrality Heatmap](Exports/Musashino_Show_DegreeCentrality.png) -->
