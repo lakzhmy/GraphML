@@ -50,27 +50,6 @@ Key findings:
 * The upper zone, where the shelf-walls branch into a tree-like arrangement, shows significantly sparser connectivity. Node clusters are separated by voids, and several cells appear as near-terminal — reachable only through one or two adjacent cells. This is consistent with more enclosed, destination-type spaces (quiet reading bays, specialist collections).  
 * The east perimeter maintains a relatively continuous chain of connected cells running the full height of the building, suggesting it functions as a long-distance routing edge even without being a designated corridor.
 
-**Degree Centrality**
-
-Colour shows how many direct neighbours each cell has. Yellow and orange mark cells with the most immediate connections; blue and purple mark cells that touch few others.
-
-![][image12]![][image13]
-![Degree Centrality - Graph](Exports/Musashino_Show_DegreeGraph.png)
-![Degree Centrality](Exports/Musashino_Show_DegreeCentrality.png)
-
-<!-- ![Degree Centrality Graph](Exports/Musashino_Show_DegreeGraph.png)
-
-![Degree Centrality Heatmap](Exports/Musashino_Show_DegreeCentrality.png) -->
-
-Degree centrality measures the number of direct connections a node has. In a grid-based floor plan, interior cells in open areas can reach up to four neighbours (N, S, E, W); cells blocked by walls or voids on one or more sides have fewer. It is the most local of the metrics — it only sees immediate adjacency, not the wider network.
-
-Key findings:
-
-* The **brightest yellow-orange zone** sits in the lower-central open area, where the shelf spirals converge. Cells here have the maximum number of immediate neighbours, confirming this as the most locally open and traversable part of the floor. The warmth of this zone is broad and continuous, not concentrated on a single cell — it is a genuinely open field, not a single hub.
-* The **upper branching zone** shows mostly blue and purple, meaning the shelf-wall bays have very few immediate neighbours. Many of these cells touch a void on two or three sides, leaving them connected only along a narrow corridor or from a single direction. This reflects the nature of the branching bays: you can only approach them from one end.
-* The **east perimeter** is cooler (purple to blue) despite playing an important role in long-distance routing. Perimeter cells only connect inward — they have neighbours on at most two or three sides — so their local degree is inherently lower than interior cells. High routing value does not equal high local connectivity.
-* The **degree heatmap is more granular than the closeness heatmap**: small pockets of lower degree appear within the otherwise warm central zone, corresponding to cells that sit adjacent to a bookshelf wall or narrow threshold. These local drops reveal exactly where the shelf-walls pinch movement even within the open floor area.
-* The **DegreeGraph** confirms that most nodes in the open floor are well-connected to each other in a mesh pattern, while nodes in the upper zone form loose chains — a few connections each, in sequence — which is the graph signature of a dead-end corridor or a branching bay.
 
 **Closeness centrality — heatmap** 
 
@@ -121,6 +100,27 @@ Key findings:
 
 The community map broadly defines a **three-ring spatial model**: a peripheral boundary zone (yellow), a ring of distinct programmatic clusters (orange, blue, dark navy), and an interior public core (pink, purple). This is the graph's description of how Fujimoto's shelf-walls partition the building — not into rooms, but into topological neighbourhoods.
 
+**Degree Centrality**
+
+Colour shows how many direct neighbours each cell has. Yellow and orange mark cells with the most immediate connections; blue and purple mark cells that touch few others.
+
+![][image12]![][image13]
+![Degree Centrality - Graph](Exports/Musashino_Show_DegreeGraph.png)
+![Degree Centrality](Exports/Musashino_Show_DegreeCentrality.png)
+
+<!-- ![Degree Centrality Graph](Exports/Musashino_Show_DegreeGraph.png)
+
+![Degree Centrality Heatmap](Exports/Musashino_Show_DegreeCentrality.png) -->
+
+Degree centrality measures the number of direct connections a node has. In a grid-based floor plan, interior cells in open areas can reach up to four neighbours (N, S, E, W); cells blocked by walls or voids on one or more sides have fewer. It is the most local of the metrics — it only sees immediate adjacency, not the wider network.
+
+Key findings:
+
+* The **brightest yellow-orange zone** sits in the lower-central open area, where the shelf spirals converge. Cells here have the maximum number of immediate neighbours, confirming this as the most locally open and traversable part of the floor. The warmth of this zone is broad and continuous, not concentrated on a single cell — it is a genuinely open field, not a single hub.
+* The **upper branching zone** shows mostly blue and purple, meaning the shelf-wall bays have very few immediate neighbours. Many of these cells touch a void on two or three sides, leaving them connected only along a narrow corridor or from a single direction. This reflects the nature of the branching bays: you can only approach them from one end.
+* The **east perimeter** is cooler (purple to blue) despite playing an important role in long-distance routing. Perimeter cells only connect inward — they have neighbours on at most two or three sides — so their local degree is inherently lower than interior cells. High routing value does not equal high local connectivity.
+* The **degree heatmap is more granular than the closeness heatmap**: small pockets of lower degree appear within the otherwise warm central zone, corresponding to cells that sit adjacent to a bookshelf wall or narrow threshold. These local drops reveal exactly where the shelf-walls pinch movement even within the open floor area.
+* The **DegreeGraph** confirms that most nodes in the open floor are well-connected to each other in a mesh pattern, while nodes in the upper zone form loose chains — a few connections each, in sequence — which is the graph signature of a dead-end corridor or a branching bay.
 
 **Conclusion**
 
