@@ -91,14 +91,14 @@ Key findings:
 **Why graph analysis is useful for architectural datasets** Graph analysis turns qualitative spatial intuition into measurable, comparable values. The closeness heatmap confirmed what the eye suspects- the spiral centre is the core but it also revealed how much deeper the outer bays are, and exposed the perimeter's hidden routing role, which is invisible in a standard floor plan reading. For a building as geometrically complex as Musashino, where the walls are also the shelves and the circulation, graph analysis is the only tool that can separate structure from experience and make the logic of the plan explicit.
 
 
-[image1]: C:\IaaC\AIA\GraphML\Assignments\Assignment02\Assets\model.jpg
-[image2]: C:\IaaC\AIA\GraphML\Assignments\Assignment02\Assets\model2.jpg
-[image3]: C:\IaaC\AIA\GraphML\Assignments\Assignment02\Exports\Musashino_Show_Topology.png
-[image4]: C:\IaaC\AIA\GraphML\Assignments\Assignment02\Exports\Musashino_Show_Grid_2.png
-[image5]: C:\IaaC\AIA\GraphML\Assignments\Assignment02\Exports\Musashino_Show_Grid.png
-[image6]: C:\IaaC\AIA\GraphML\Assignments\Assignment02\Exports\Musashino_Show_Shell_2.png
-[image7]: C:\IaaC\AIA\GraphML\Assignments\Assignment02\Exports\Musashino_Show_Shell.png
-[image8]: C:\IaaC\AIA\GraphML\Assignments\Assignment02\Exports\Musashino_Show_AnalysisGraph_2.png
-[image9]: C:\IaaC\AIA\GraphML\Assignments\Assignment02\Exports\Musashino_Show_AnalysisGraph.png
-[image10]: C:\IaaC\AIA\GraphML\Assignments\Assignment02\Exports\Musashino_Show_Heat1.png
-[image11]: C:\IaaC\AIA\GraphML\Assignments\Assignment02\Exports\Musashino_Show_ShortestPath.png
+[image1]: Assets/model.jpg
+[image2]: Assets/model2.jpg
+[image3]: Exports/Musashino_Show_Topology.png
+[image4]: Exports/Musashino_Show_Grid_2.png
+[image5]: Exports/Musashino_Show_Grid.png
+[image6]: Exports/Musashino_Show_Shell_2.png
+[image7]: Exports/Musashino_Show_Shell.png
+[image8]: Exports/Musashino_Show_AnalysisGraph_2.png
+[image9]: Exports/Musashino_Show_AnalysisGraph.png
+[image10]: Exports/Musashino_Show_Heat1.png
+[image11]: Exports/Musashino_Show_ShortestPath.png
