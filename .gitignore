@@ -59,9 +59,7 @@ GML_notebooks_folder/
 # IMAGES
 ##################################################
 
-*.jpg
 *.jpeg
-*.png
 *.gif
 *.bmp
 *.tiff
