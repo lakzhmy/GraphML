@@ -1,256 +1,91 @@
-# Graph Analysis of Musashino Art University Library
-**GraphML — Assignment 02**
-**Author:** Lakzhmy
-**Date:** May 2026
-**Tool:** TopologicPy + Python (Jupyter Notebook)
+**Graph Analysis of Musashino Art University Library** 
 
----
+GraphML — Assignment 02 by Lakzhmy Mari Zaro
 
-## 1. Building Overview
+TopologicPy \+ Python (Jupyter Notebook) 
 
-The Musashino Art University Library, designed by Sou Fujimoto Architects (completed 2010), is one of the most spatially inventive library buildings of recent decades. Its defining feature is a continuous spiral of wooden bookshelves that simultaneously functions as the building's walls, partitions, and primary circulation spine. The floor plan is non-orthogonal — the outer boundary is an irregular, curved polygon — and the interior is organized around a large central void formed by the converging shelf-walls, surrounded by open reading and browsing areas.
+**Building Overview** 
 
-This report applies graph-based spatial analysis to the floor plan to quantify and interpret its spatial structure — identifying which zones are most accessible, where bottlenecks form, and how circulation is distributed across the building.
+The Musashino Art University Library was designed by Sou Fujimoto Architects and completed in 2010\. The building is built around a single continuous spiral of wooden bookshelves, and these shelves do most of the work in the plan. They act as the walls, the partitions, and the main circulation route all at once. The outer edge of the building is not a regular rectangle but a curved, irregular polygon, and the inside opens up around a large central void where the shelf-walls meet. 
 
----
+The aim of this report is to apply graph-based spatial analysis to the floor plan. I wanted to find out which spaces are most accessible, where movement gets squeezed through narrow passages, and how circulation is shared across the floor. The floor plan was converted into a spatial graph by overlaying a 1×1-unit grid, slicing it into discrete face cells, and deriving an analysis graph where each cell is a node and shared adjacencies are edges.
 
-## 2. Methodology
+Three metrics were computed and visualized: the Analysis Graph (spatial network), Closeness Centrality, and Shortest Path.
 
-### 2.1 From Floor Plan to Graph
+![][C:\IaaC\AIA\GraphML\Assignments\Assignment02\Assets\model.jpg]![][image2]
 
-The analysis workflow proceeds in the following steps:
+**Floor plan topology** 
 
-1. **Import geometry** — The floor plan was imported from an `.obj` file and converted to a topological shell (`topologicpy.Shell`).
-2. **Grid discretisation** — A 1×1-unit grid was overlaid on the bounding rectangle of the floor plan and clipped to its outline, subdividing the continuous surface into discrete face cells.
-3. **Graph extraction** — Two graphs were derived from the shell:
-   - **Analysis Graph** — centroid-to-centroid connections between adjacent faces (used for centrality metrics).
-   - **Navigation Graph** — connectivity via shared edges (used for shortest path routing).
-4. **Metric computation** — Three spatial metrics were computed: Degree Centrality, Closeness Centrality, and Betweenness Centrality, plus a Shortest Path query.
-5. **Visualisation** — Metric values were mapped back onto the floor plan faces using a thermal colour scale (blue–purple = low, orange–yellow = high).
+The raw imported floor geometry. The irregular outer edge of the building is clearly visible, along with the internal voids made by the bookshelf walls and structural cores. ![][image3]
 
----
+**Grid overlay** 
 
-## 3. Visualisations
+A 2×2 unit grid clipped to the plan outline. Each surviving cell becomes a node in the analysis graph. 
 
-### 3.1 Floor Plan Topology
-Raw imported floor geometry — the building's irregular perimeter and internal void structure (bookshelf walls, structural elements, and open areas) are clearly visible.
+| ![][image4] | ![][image5] |
+| :---- | :---- |
 
-![Floor Plan Topology](Exports/Musashino_Show_Topology.png)
+**Discretised shell** 
 
-### 3.2 Grid Overlay
-A 1×1-unit grid clipped to the floor plan outline. Each cell becomes a node in the analysis graph.
+The floor plan after it has been sliced by the grid. The result is a shell of discrete face cells ready to be turned into a graph.
 
-![Grid Overlay](Exports/Musashino_Show_Grid.png)
+| ![][image6] | ![][image7] |
+| :---- | :---- |
 
-### 3.3 Discretised Shell
-The floor plan after slicing by the grid, producing the topological shell of face cells.
+**Analysis graph** 
 
-![Discretised Shell](Exports/Musashino_Show_Shell.png)
+The graph pulled from the shell. Red dots sit at the centre of each face, and grey lines join cells that touch each other. Where the lines cluster, the floor is open and easy to cross. Where they thin out, the shelf-walls or voids are blocking movement. 
 
-### 3.4 Analysis Graph
-The graph derived from the shell. Red vertices sit at each face centroid; grey edges connect spatially adjacent faces. The density of connections reveals open, traversable zones versus blocked areas (voids, walls).
+| ![][image8] | ![][image9] |
+| :---- | :---- |
 
-![Analysis Graph](Exports/Musashino_Show_AnalysisGraph.png)
-![Analysis Graph (Detail)](Exports/Musashino_Show_AnalysisGraph_2.png)
+The analysis graph overlays the spatial network onto the floor plan. Each red dot is a node (face cell centroid) and each red line is a direct spatial connection between two adjacent cells.
 
-### 3.5 Closeness Centrality — Thermal Heatmap
-Colour encodes closeness centrality (thermal scale: yellow-orange = high integration, blue-purple = low).
+Key findings:
 
-![Closeness Centrality Heatmap](Exports/Musashino_Show_Heat.png)
+* The lower-central area (the open reading and browsing zone between the converging shelf spirals) produces the densest node-edge cluster. Cells here have up to four neighbours in all directions, indicating a freely traversable, open floor.  
+* The black voids cutting through the graph correspond to the bookshelf walls and structural masses. These are physically inaccessible cells that fragment the graph locally and force movement to route around them.  
+* The upper zone, where the shelf-walls branch into a tree-like arrangement, shows significantly sparser connectivity. Node clusters are separated by voids, and several cells appear as near-terminal — reachable only through one or two adjacent cells. This is consistent with more enclosed, destination-type spaces (quiet reading bays, specialist collections).  
+* The east perimeter maintains a relatively continuous chain of connected cells running the full height of the building, suggesting it functions as a long-distance routing edge even without being a designated corridor.
 
-### 3.6 Betweenness Centrality — Thermal Heatmap
-Colour encodes normalised betweenness centrality. High values indicate cells that frequently appear on shortest paths between all other pairs of cells.
+**Closeness centrality — heatmap** 
 
-![Betweenness Centrality Heatmap](Exports/Musashino_Show_Heat1.png)
+Colour shows how globally accessible each cell is. Yellow and orange mark the most integrated cells; blue and purple mark cells that take the longest to reach from everywhere else. **![][image10]**
 
-### 3.7 Shortest Path
-Red = original topological shortest path (upper-left corner → lower-right corner, **114.46 units**).
-Blue = geometrically straightened path (**109.37 units**). Both routes hug the right perimeter of the building.
+Closeness centrality measures how quickly a space can reach all other spaces in the network. Bright yellow-orange indicates high global accessibility; dark blue-purple indicates spaces that are topologically remote.
 
-![Shortest Path](Exports/Musashino_Show_ShortestPath.png)
+Key findings:
 
----
+* The brightest region — highest closeness — sits in the lower-central area of the floor plan, at the convergence point of the spiral bookshelf system. This is the building's topological centre of mass: a space with the shortest average path distance to every other cell in the graph.  
+* A warm gradient extends outward from this core, covering the open mid-floor zones in orange and amber. These intermediate areas are well-connected but require passing through the central zone to reach the far reaches of the building.  
+* The upper branching zone is consistently blue-purple, confirming that the shelf-wall bays are topologically deep. Reaching them from most other spaces requires many traversal steps — they are intentionally remote, suited to quiet or contemplative use.  
+* The north corner (the canopy/overhang area visible at the top) is the darkest region in the heatmap — the most peripheral space in the entire floor plan, with the highest topological depth.  
+* The perimeter edges (east and west) are uniformly low-closeness, consistent with boundary cells that connect on only one side. Despite their role in long-distance routing, they are not globally central.  
+* Architecturally, this metric confirms that Fujimoto's spiral convergence is not only the spatial but also the topological heart of the building. The increasing depth toward the outer bays is a deliberate design move — the shelf-walls generate accessibility gradient as an experiential device, rewarding exploratory movement with progressively quieter spaces.
 
-## 4. Graph Metrics
+  **Shortest path** 
 
-### 4.1 Degree Centrality
+The red line is the shortest path found through the topological shell, running from the upper-left corner to the lower-right corner — a length of **114.46 units**. The blue line is the same path after geometric straightening, which trims the length down to **109.37 units**. Both routes hug the right side of the building. 
 
-**Definition:** The degree of a node is the number of direct neighbours (adjacent cells). Degree centrality normalises this by the maximum possible degree:
+![][image11]
 
-$$DC(v) = \frac{\deg(v)}{n - 1}$$
+The shortest path was computed from the upper-left corner to the lower-right corner of the floor plan — a full diagonal traversal of the building. Red shows the original topological path (114.46 units); blue shows the geometrically straightened version (109.37 units).
 
-In a grid graph, interior cells in open areas have up to **4 neighbours** (N, S, E, W); cells adjacent to a wall or void have fewer. Degree centrality therefore acts as a local openness indicator.
+Key findings:
 
-| Zone | Degree Centrality | Interpretation |
-|---|---|---|
-| Open reading / browsing area (lower-centre) | High (≈ 3–4 neighbours) | Freely traversable open floor |
-| Bookshelf-wall corridor interfaces | Medium (2–3 neighbours) | Constrained by shelf walls on one or more sides |
-| Central void and structural cores | Low (0–1 neighbours) | Physically inaccessible cells, blocked by shelves or walls |
-| Perimeter / boundary cells | Low–Medium | Edge of building — only inward-facing neighbours |
+* Both the original and straightened paths travel along the right (east) perimeter of the building from top to bottom, rather than cutting through the interior. The bookshelf walls make any diagonal interior route topologically longer, so the perimeter becomes the efficient choice.  
+* The 4.4% savings from straightening (5.09 units) is small, indicating the navigation graph already finds a geometrically efficient route — there is little redundancy in the topology of the perimeter edge.  
+* The interior open zone, despite having the highest closeness centrality, does not appear in the long-distance path because it supports local, diffuse browsing movement rather than directional traversal.  
+* This reveals a dual circulation logic: the high-centrality core handles local movement and browsing; the east perimeter handles fast, long-distance crossing. The building has two distinct movement modes operating simultaneously without interference.
 
-**Key finding:** The open lower-central area of the library, which corresponds to the main browsing and reading zone between the converging shelf spirals, has the highest degree centrality. The upper section, where the shelf-walls branch into a tree-like arrangement, has significantly reduced local connectivity — cells are more isolated from their immediate neighbourhood.
+**Conclusion**
 
----
+**Circulation Patterns** The building operates with two overlapping circulation systems. Local movement is diffuse and exploratory, absorbed by the open central zone where high connectivity allows free-form browsing. Long-distance movement is channelled to the east perimeter (the building's only uninterrupted edge) since the bookshelf walls prevent efficient diagonal traversal through the interior.
 
-### 4.2 Closeness Centrality
+**Hierarchy of Spaces** There is a clear spatial hierarchy. At the top sits the open central convergence zone (highest closeness centrality), which acts as the building's spatial anchor. Below it are the transitional mid-floor areas- accessible but not primary. At the base are the deep shelf-wall bays in the upper branching zone, which are destination spaces with limited onward connectivity.
 
-**Definition:** Closeness centrality measures how close a node is to all other nodes in the graph, defined as the reciprocal of the average shortest path length to every other node:
+**Accessibility and Connectivity Accessibility** is unevenly but intentionally distributed. The central core is maximally accessible; the outer bays are deliberately remote. The perimeter provides compensatory connectivity for long-distance movement, ensuring the building remains navigable even when the interior is obstructed. There is no single bottleneck node whose removal would sever the building- the graph is robust because the open floor area provides multiple parallel routing options.
 
-$$CC(v) = \frac{n-1}{\sum_{u \neq v} d(v,u)}$$
+**Functional Zoning** The graph reveals three emergent zones without explicit walls: an open-access core (lower-centre, highest centrality) for primary browsing and reading; a transitional branching zone (mid-floor, intermediate centrality) where the shelf corridors channel movement between open and enclosed areas; and deep destination bays (upper zone, lowest closeness) suited to quiet or specialised use. This gradient (from public and diffuse to private and deep) is the spatial argument of the building, and the graph makes it legible numerically.
 
-In space syntax terms, this corresponds to **global integration** — a high closeness value means a space can be reached from anywhere in the building with fewer traversal steps.
-
-**Results (from thermal heatmap — `Musashino_Show_Heat.png`):**
-
-| Zone | Closeness Centrality | Interpretation |
-|---|---|---|
-| Central lower zone (open floor area) | **Highest** — bright yellow-orange core | Most globally accessible space in the building |
-| Mid-floor transitional areas | Medium — orange to amber gradient | Moderate accessibility; key intermediate zones |
-| Upper branching shelf-wall zone | Low — blue to purple | Topologically deep; requires many steps to reach from most other spaces |
-| North corner (entry canopy/overhang) | **Lowest** — deep blue | Most peripheral; highest topological depth |
-| Perimeter east and west edges | Low | Boundary condition; one-sided connectivity only |
-
-**Key finding:** The warm core in the closeness heatmap sits in the **open central-lower area**, roughly corresponding to the primary reading hall and the convergence point of the spiral bookshelf system. This is the building's natural "spatial heart" — the space with the greatest topological proximity to all other spaces. The upper zone, where the shelf-walls fan outward and divide into smaller bays, is topologically deep, meaning visitors must pass through many intermediate spaces to reach it.
-
----
-
-### 4.3 Betweenness Centrality
-
-**Definition:** Betweenness centrality counts how many shortest paths between all pairs of nodes pass through a given node, normalised to [0, 1]:
-
-$$BC(v) = \frac{2}{(n-1)(n-2)} \sum_{s \neq v \neq t} \frac{\sigma_{st}(v)}{\sigma_{st}}$$
-
-where $\sigma_{st}$ is the total number of shortest paths from $s$ to $t$, and $\sigma_{st}(v)$ is those that pass through $v$. High betweenness indicates a **bottleneck or connector** — a space through which most through-movement must funnel.
-
-**Results (from `Musashino_Show_Heat1.png`):**
-
-| Zone | Betweenness Centrality | Interpretation |
-|---|---|---|
-| Open lower-central area | **Highest** | Primary movement corridor; critical spatial connector |
-| Narrow bookshelf corridor passages | High (localised) | Pinch points — removing these cells would disconnect sub-graphs |
-| Right perimeter (east face) | Medium-High | Key route for long-distance traversal (confirmed by shortest path) |
-| Upper shelf-wall bays | Low | Dead-end-like spaces; minimal through-traffic |
-| Extreme perimeter corners | Lowest | Rarely on any shortest path |
-
-**Key finding:** The betweenness heatmap closely mirrors the closeness map, but with a sharper distinction between the high-centrality core and the rest. The **central lower zone acts as a mandatory through-space** for movement across the entire floor plate. The narrow passages through the bookshelf walls show localised spikes in betweenness — these are structural bottlenecks where removing or blocking the passage would significantly disrupt overall circulation. This matches the intended design logic: the bookshelf walls guide movement through defined thresholds.
-
----
-
-### 4.4 Shortest Path
-
-**Query:** From the upper-left corner `(xmin+2, ymax-2)` to the lower-right corner `(xmax-2, ymin+2)` — a full diagonal traversal of the floor plate.
-
-| Metric | Value |
-|---|---|
-| Original shortest path length | **114.46 units** |
-| Geometrically straightened path | **109.37 units** |
-| Savings from straightening | 5.09 units (≈ 4.4%) |
-| Computation time (routing) | 5.06 s |
-| Computation time (straightening) | ~120 s |
-
-**Path route:** Both the original and straightened paths travel along the **right (east) perimeter** of the building, hugging the outer boundary from the top-right corner to the bottom-right corner. This is significant: despite the building having an open central floor area with high centrality, the direct diagonal route through the interior is blocked by the spiral bookshelf walls. The perimeter becomes the efficient long-distance route, while the interior supports local browsing movement.
-
-The small difference between the raw and straightened paths (4.4%) confirms that the navigation graph already finds a geometrically efficient route — there is minimal redundancy in the path.
-
----
-
-## 5. Interpretation of Results
-
-### 5.1 Most Connected Spaces
-
-The **central lower zone** — the open reading and browsing area between the converging shelf spirals — is the most connected space by all three metrics simultaneously:
-- Highest local connectivity (Degree)
-- Most globally accessible (Closeness)
-- Most traversed by through-movement (Betweenness)
-
-This zone functions as the spatial and programmatic core of the building. In Fujimoto's design intention, the continuous spiral of shelves leads visitors through an uninterrupted browsing experience, but the graph analysis confirms that the centre of that spiral convergence is also the topological centre of gravity.
-
-### 5.2 Critical Connectors and Bottlenecks
-
-The **passage thresholds through the bookshelf walls** register as localised betweenness spikes. These narrow openings are the architectural equivalent of bridges in a network — their removal would disconnect sub-regions of the floor plate. This is a deliberate design move: rather than an open plan, Fujimoto uses the bookshelf walls to channel movement and create a sense of spatial discovery while ensuring all parts of the building remain connected through defined thresholds.
-
-The **east perimeter edge** acts as a secondary connector for long-distance traversal, as confirmed by the shortest path result. Visitors needing to cross the full extent of the building without deep penetration of the shelf zone will naturally gravitate toward the perimeter.
-
-### 5.3 Clusters and Zones
-
-Three broad spatial clusters emerge from the analysis:
-
-| Cluster | Location | Characteristics |
-|---|---|---|
-| **High-integration core** | Lower centre | Open floor, max closeness and betweenness, primary movement zone |
-| **Branching shelf zone** | Upper centre / upper left | Topologically deep, low global accessibility, exploratory character |
-| **Peripheral boundary** | All edges | Low centrality, transitional function, provides long-distance routing |
-
----
-
-## 6. Spatial Organisation Analysis
-
-### 6.1 Circulation Patterns
-
-The graph reveals a **dual-layer circulation system**:
-1. **Local / browsing circulation** — operates through the open central area, leveraging the high local connectivity (degree) of the open floor. Movement here is diffuse and non-directional, consistent with the library's intention of encouraging spontaneous browsing.
-2. **Long-distance / directional circulation** — routes around the perimeter or through the high-betweenness central corridor. This is efficient but passes through the same critical connector cells repeatedly, creating a channelling effect.
-
-The absence of strong linear axes in the floor plan (confirmed by the lack of any single high-betweenness corridor) suggests that the building resists directional "desire lines" in favour of meandering exploration — a finding consistent with Fujimoto's stated design philosophy of blurring boundaries between movement and encounter.
-
-### 6.2 Hierarchy of Spaces
-
-The centrality gradients define a clear spatial hierarchy:
-
-1. **Primary** — The open central-lower zone: high in all metrics, acts as the building's spatial anchor.
-2. **Secondary** — The bookshelf passage thresholds: critical connectors but not open spaces; high betweenness but constrained degree.
-3. **Tertiary** — The branching upper bays: topologically deep reading nooks, destination spaces rather than through-spaces.
-4. **Boundary** — The perimeter cells: low global centrality but essential for long-distance routing.
-
-This hierarchy mirrors the conventional library programme: the most accessible zone hosts the highest-demand function (open browsing/reference), while deeper zones house more specialised or quiet collections.
-
-### 6.3 Accessibility and Connectivity
-
-The floor plan is a single connected component — all cells are reachable from all other cells. However, the topological depth of the upper branching zone is notably high: reaching the furthest bays requires traversal through many intermediate spaces. This is a deliberate accessibility trade-off: the upper zones are not poorly designed, but intentionally deep, prioritising atmosphere and immersion over convenience.
-
-The east perimeter offers the fastest connectivity between the north and south ends of the building, suggesting that service or staff circulation (requiring speed) would naturally use this edge.
-
-### 6.4 Functional Zoning
-
-The graph analysis reveals a zoning logic that is **emergent** rather than explicit — the bookshelf walls define zones not by labelled rooms but by topological depth:
-
-| Zone Type | Graph Characteristic | Likely Programme |
-|---|---|---|
-| High centrality core | High degree, closeness, betweenness | Open reading, information desk, main browsing |
-| Intermediate connectors | Medium centrality, high betweenness locally | Passages, threshold spaces, transitions |
-| Deep branching bays | Low closeness, low degree | Quiet reading, specialised collections |
-| Perimeter strip | Low closeness, medium betweenness for paths | Auxiliary programme, service, entry/exit |
-
----
-
-## 7. Graph Analysis Results Summary
-
-| Metric | Peak Location | Peak Value (relative) | Lowest Location |
-|---|---|---|---|
-| Degree Centrality | Open lower-centre | Max 4 neighbours (interior) | Void / wall cells (0) |
-| Closeness Centrality | Open lower-centre | Highest (warm yellow-orange) | North corner (deep blue) |
-| Betweenness Centrality | Open lower-centre + shelf passages | Highest (warm yellow-orange) | Far perimeter corners |
-| Shortest Path (UL→LR) | East perimeter route | 114.46 units (raw) / 109.37 (straightened) | — |
-| Graph Density (analysis) | Full graph | — (large grid graph) | — |
-
----
-
-## 8. Why Graph Analysis Is Useful for Architectural Datasets
-
-Traditional architectural analysis relies on qualitative description and visual reading of plans. Graph analysis adds a layer of **quantitative, reproducible spatial intelligence** that reveals properties invisible to the eye alone:
-
-1. **Objective measurement of accessibility** — Closeness centrality gives a single comparable value to each space, enabling ranking without subjective judgement. In the Musashino Library, this confirms the intuition that the spiral core is central, but also reveals *how much more* central it is than the perimeter zones.
-
-2. **Identification of hidden bottlenecks** — Betweenness centrality exposed the bookshelf passage thresholds as critical single-point connectors. This is design information with direct safety and wayfinding implications (e.g., evacuation planning, signage placement).
-
-3. **Cross-scale analysis** — The same graph framework that characterises a single room can scale to an entire campus or urban network. This scalability makes it a powerful tool for multi-scale design decisions.
-
-4. **Simulation support** — Shortest path results can seed pedestrian movement simulations, helping predict crowd flows and identify where congestion is likely under high-occupancy conditions.
-
-5. **Design feedback** — By comparing centrality maps against intended programme locations, architects can verify whether the spatial logic of the plan supports the programme — or identify mismatches early in the design process.
-
-In the case of Musashino Art University Library, the graph analysis validates the coherence of Sou Fujimoto's spatial strategy: the most integrated zone aligns precisely with the intended primary public area, the bookshelf walls successfully channel rather than fragment movement, and the topological depth of the branching bays supports quiet, contemplative use. The building's complexity is real, but it is structured complexity — and graph analysis makes that structure legible.
-
----
-
-*Analysis performed using TopologicPy v0.9.26. Floor plan geometry sourced from `MusashinoLibrary_FloorPlate.obj`. Full computational workflow in `Musashino_Floor.ipynb`.*
+**Why graph analysis is useful for architectural datasets** Graph analysis turns qualitative spatial intuition into measurable, comparable values. The closeness heatmap confirmed what the eye suspects- the spiral centre is the core but it also revealed how much deeper the outer bays are, and exposed the perimeter's hidden routing role, which is invisible in a standard floor plan reading. For a building as geometrically complex as Musashino, where the walls are also the shelves and the circulation, graph analysis is the only tool that can separate structure from experience and make the logic of the plan explicit.
