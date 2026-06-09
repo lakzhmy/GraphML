@@ -74,10 +74,10 @@ story.append(Paragraph("Building Graph Representation", style_subtitle))
 story.append(Paragraph("<i>Graph Machine Learning — Session 06 (13A &amp; 13B)</i>", style_subtitle_italic))
 story.append(HRFlowable(width="80%", thickness=1, color=HexColor("#aaaaaa"), spaceAfter=14, spaceBefore=6))
 
-# Figure on title page - geometry overview
+# Figure on title page - coloured geometry overview
 img_path = os.path.join(BASE, "geometry1.png")
 if os.path.exists(img_path):
-    story.append(Image(img_path, width=280, height=210, kind='proportional'))
+    story.append(Image(img_path, width=260, height=195, kind='proportional'))
     story.append(Paragraph("<i>Building overview — CellComplex coloured by spatial type</i>", style_caption))
 
 # ---- THE BUILDING MODEL ----
@@ -152,6 +152,13 @@ story.append(Paragraph(
     "and the manually assigned graph label.",
     style_body
 ))
+
+# Figure 3 - Adjacency graph
+img_path = os.path.join(BASE, "Adjacency_Graph.png")
+if os.path.exists(img_path):
+    story.append(Spacer(1, 6))
+    story.append(Image(img_path, width=300, height=220, kind='proportional'))
+    story.append(Paragraph("<i>Figure 3. Adjacency graph — nodes coloured by type, edges represent shared faces</i>", style_caption))
 
 # ---- PART 2 ----
 story.append(Paragraph("Part 2 — Predicting the Label (13B)", style_h1))
